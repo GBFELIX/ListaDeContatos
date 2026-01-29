@@ -1,0 +1,43 @@
+﻿@model IEnumerable<ListaDeContatatos.Models.Pessoa>;
+@{
+    ViewData["Title"] = "Listagem de contatos";
+}
+
+<h1>Listagem de contatos</h1>
+
+<div class="d-grid gap-2 d-md-block">
+    <a onClick="" class="btn btn-primary">Baixar excel</a>
+    
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col"><input type="checkbox" id="checkAll"/> Marcar todos</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Email</th>
+            <th scope="col">Telefone</th>
+            <th scope="col">Status</th>
+            <th scope="col">Ações</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var p in Model)
+        {
+            <tr>
+                <td><input type="checkbox" name="selected" value="@p.Id"/ class="checkbox-item"></td>
+                <th scope="col">@p.Nome</th>
+                <th scope="col">@p.Email</th>
+                <th scope="col">@p.Telefone</th>
+                <th scope="col">@p.Status</th>
+                <td>
+                    <div class="d-grid gap-2 d-md-block">
+                        <a onclick="" class="btn btn-primary">Editar</a>
+                        <a onclick="" class="btn btn-primary">Excluir</a>
+                    </div>
+                </td>
+            </tr>
+        }
+        </tr>
+    </tbody>
+</table>
