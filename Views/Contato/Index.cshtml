@@ -1,43 +1,66 @@
-﻿@model IEnumerable<ListaDeContatatos.Models.Pessoa>;
+﻿@model IEnumerable<ListaDeContatatos.Models.Pessoa>
 @{
     ViewData["Title"] = "Listagem de contatos";
 }
 
 <h1>Listagem de contatos</h1>
 
-<div class="d-grid gap-2 d-md-block">
-    <a onClick="" class="btn btn-primary">Baixar excel</a>
-    
+<div class="d-grid gap-3 d-md-block">
+    <a class="btn btn-success" id="baixarExcel" onclick="ExportarExcel()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-excel-fill me-2" viewBox="0 0 16 16">
+            <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zM5.884 6.68 8 9.219l2.116-2.54a.5.5 0 1 1 .768.641L8.651 10l2.233 2.68a.5.5 0 0 1-.768.64L8 10.781l-2.116 2.54a.5.5 0 0 1-.768-.641L7.349 10 5.116 7.32a.5.5 0 1 1 .768-.64z" />
+        </svg>
+    </a>
+
+    <a class="btn btn-primary" id="criar" onclick="Criar()">
+        <i class="bi bi-plus-lg"></i> +
+    </a>
 </div>
+
 <table class="table">
     <thead>
         <tr>
-            <th scope="col"><input type="checkbox" id="checkAll"/> Marcar todos</th>
+            <th scope="col"><input type="checkbox" id="checkAll" /> Marcar todos</th>
             <th scope="col">Nome</th>
             <th scope="col">Email</th>
             <th scope="col">Telefone</th>
             <th scope="col">Status</th>
             <th scope="col">Ações</th>
-            
         </tr>
     </thead>
     <tbody>
-        @foreach(var p in Model)
+        @foreach (var p in Model)
         {
             <tr>
-                <td><input type="checkbox" name="selected" value="@p.Id"/ class="checkbox-item"></td>
-                <th scope="col">@p.Nome</th>
-                <th scope="col">@p.Email</th>
-                <th scope="col">@p.Telefone</th>
-                <th scope="col">@p.Status</th>
+                <td><input type="checkbox" name="selected" value="@p.Id" class="checkbox-item" /></td>
+                <td>@p.Nome</td>
+                <td>@p.Email</td>
+                <td>@p.Telefone</td>
+                <td>@p.Status</td>
                 <td>
                     <div class="d-grid gap-2 d-md-block">
-                        <a onclick="" class="btn btn-primary">Editar</a>
-                        <a onclick="" class="btn btn-primary">Excluir</a>
+                        <a onclick="Editar(@p.Id)" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-highlighter" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M11.096.644a2 2 0 0 1 2.791.036l1.433 1.433a2 2 0 0 1 .035 2.791l-.413.435-8.07 8.995a.5.5 0 0 1-.372.166h-3a.5.5 0 0 1-.234-.058l-.412.412A.5.5 0 0 1 2.5 15h-2a.5.5 0 0 1-.354-.854l1.412-1.412A.5.5 0 0 1 1.5 12.5v-3a.5.5 0 0 1 .166-.372l8.995-8.07zm-.115 1.47L2.727 9.52l3.753 3.753 7.406-8.254zm3.585 2.17.064-.068a1 1 0 0 0-.017-1.396L13.18 1.387a1 1 0 0 0-1.396-.018l-.068.065zM5.293 13.5 2.5 10.707v1.586L3.707 13.5z" />
+                            </svg>
+                        </a>
+                        <a onclick="Deletar(@p.Id)" class="btn btn-danger">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                            </svg>
+                        </a>
                     </div>
                 </td>
             </tr>
         }
-        </tr>
     </tbody>
 </table>
+
+@await Html.PartialAsync("Editar", new ListaDeContatatos.Models.Pessoa())
+
+@await Html.PartialAsync("Criar", new ListaDeContatatos.Models.Pessoa())
+
+@section Scripts {
+    <script src="~/js/site.js"></script>
+}

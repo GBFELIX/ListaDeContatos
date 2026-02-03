@@ -1,0 +1,46 @@
+﻿@model ListaDeContatatos.Models.Pessoa
+
+<div class="modal fade" id="CriarModal" tabindex="-1" aria-labelledby="CriarModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="formCriar">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="CriarModalLabel">Criar Contato</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="Id" asp-for="Id" />
+
+                <div class="mb-4">
+                    <label>Status</label>
+                    <select id="Status" asp-for="Status" class="form-control">
+                        <option value="">-- Selecione um Status --</option>
+                        <option value="Ativo">Ativo</option>
+                        <option value="Inativo">Inativo</option>
+                    </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label>Nome</label>
+                    <input id="Nome" asp-for="Nome" class="form-control" />
+                </div>
+
+                <div class="mb-4">
+                    <label>Email</label>
+                    <input id="Email" asp-for="Email" class="form-control" />
+                </div>
+
+                <div class="mb-4">
+                    <label>Telefone</label>
+                    <input id="Telefone" asp-for="Telefone" class="form-control" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" onclick="CriarUsuario()" class="btn btn-primary">Salvar</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
