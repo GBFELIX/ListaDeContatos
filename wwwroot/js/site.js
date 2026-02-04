@@ -5,15 +5,21 @@
     }
 }
 function ExportarExcel() {
-    const selecionados = document.querySelectorAll('.checkbox-item:checked').map(cb => parseInt(cb.value);
+    const selecionados = Array.from(document.querySelectorAll('.checkbox-item:checked'))
+        .map(cb => parseInt(cb.value));
+
+    if (selecionados.length === 0) {
+        alert("Por favor, selecione pelo menos um contato para exportar.");
+        return;
+    }
 
     fetch('/Contato/ExportarExcel', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ selecionados })
+        body: JSON.stringify(selecionados)
     })
         .then(response => {
-            if (response.ok) return reponse.blob();
+            if (response.ok) return response.blob();
             throw new Error('Resposta da rede não OK');
         })
         .then(blob => {
@@ -54,16 +60,13 @@ function Editar(id) {
         .catch(err => console.error('Erro ao carregar contato:', err));
 }
 function Deletar(id) {
-    if (!id) {
-        console.warn('Não encontrou a pessoa selecionada');
-        return;
-    }
         fetch(`/Contato/Deletar/${id}`, {
             method: 'DELETE' 
         })
         .then(response => {
             if (!response.ok) throw new Error('Resposta da rede não OK');
             return response.json();
+
         })
         .then(data => {
             document.getElementById("Id").value = data.id ?? id;
@@ -73,7 +76,7 @@ function Deletar(id) {
                 alert('Erro ao salvar alterações.');
                 console.error('Deletar: resposta do servidor:', data);
             } else {
-                alert('Alterações feitas.');
+                alert('Sucesso.');
                 location.reload();
             
         }

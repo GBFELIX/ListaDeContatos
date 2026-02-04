@@ -3,6 +3,9 @@ using ListaDeContatatos.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using System.Formats.Tar;
+using System.Reflection.PortableExecutable;
+using System.Text;
 
 namespace ListaDeContatatos.Controllers
 {
@@ -162,9 +165,40 @@ namespace ListaDeContatatos.Controllers
             {
                 return Json(new { success = false, message = ex.Message });
             }
+
         }
         [HttpPost]
         public IActionResult ExportarExcel([FromBody] List<int> ids)
         {
+            List<Pessoa> contatos = new();
+            using (var con = _conexao.conectar())
+            {
+                string idsString = string.Join(",", ids);
+                string sql = $"SELECT * FROM Pessoa WHERE Id IN ({idsString})";
+
+
+                var csv = new StringBuilder();
+                csv.AppendLine("Id,Nome,Email,Telefone,Status\n");
+
+
+                using (SqlCommand cmd = new SqlCommand(sql, con))
+                {
+                    con.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+
+                        {
+                            while (reader.Read())
+                            {
+                                csv.AppendLine($"{reader["Id"]},{reader["Nome"]},{reader["Email"]},{reader["Telefone"]},{reader["Status"]}");
+                            }
+                        }
+                    }
+                }
+                var bytes = Encoding.UTF8.GetBytes(csv.ToString());
+
+                return File(bytes, "text/csv", "contatos.csv");
+            }
         }
     }
+}
